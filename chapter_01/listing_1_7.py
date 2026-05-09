@@ -11,6 +11,12 @@ sync_start = time.time()
 
 read_example()
 read_example()
+read_example()
+read_example()
+read_example()
+read_example()
+read_example()
+read_example()
 
 sync_end = time.time()
 
