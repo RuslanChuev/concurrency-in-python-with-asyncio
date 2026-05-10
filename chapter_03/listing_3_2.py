@@ -22,5 +22,7 @@ try:
             buffer = buffer + data
 
     print(f"All the data is: {buffer}")
+
+    connection.sendall(buffer)
 finally:
     server_socket.close()

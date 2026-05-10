@@ -2,8 +2,12 @@ import asyncio
 from asyncio import AbstractEventLoop
 import signal
 from typing import Set
-from util import delay
+import sys
+import os
 
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from util import async_timed, delay
 
 def cancel_tasks():
     print('Got a SIGINT!')

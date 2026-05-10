@@ -22,14 +22,35 @@ while True:
         print('No events, waiting a bit more!')
 
     for event, _ in events:
-        event_socket = event.fileobj #C
+        event_socket = event.fileobj
 
-        if event_socket == server_socket: #D
+        # Новое подключение
+        if event_socket == server_socket:
             connection, address = server_socket.accept()
             connection.setblocking(False)
             print(f"I got a connection from {address}")
-            selector.register(connection, selectors.EVENT_READ) #E
+            selector.register(connection, selectors.EVENT_READ)
         else:
-            data = event_socket.recv(1024) #F
-            print(f"I got some data: {data}")
-            event_socket.send(data)
+            # Чтение данных от клиента
+            try:
+                data = event_socket.recv(1024)
+            except (ConnectionResetError, ConnectionAbortedError, OSError):
+                # Клиент нештатно разорвал соединение
+                print(f"Client forcibly closed connection: {event_socket.getpeername()}")
+                selector.unregister(event_socket)
+                event_socket.close()
+                continue
+
+            if data:
+                # Данные получены — эхо
+                print(f"I got some data: {data}")
+                # В неблокирующем режиме send() может отправить не всё,
+                # но для учебного примера оставим однократную попытку.
+                # При реальной разработке нужно использовать sendall() в блокирующем режиме
+                # или организовать буферизацию с отслеживанием EVENT_WRITE.
+                event_socket.send(data)
+            else:
+                # data == b''  => клиент закрыл соединение (вежливо)
+                print(f"Client closed connection: {event_socket.getpeername()}")
+                selector.unregister(event_socket)
+                event_socket.close()
