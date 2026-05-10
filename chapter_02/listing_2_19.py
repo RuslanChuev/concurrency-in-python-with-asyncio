@@ -1,4 +1,9 @@
+import sys
+import os
 import asyncio
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from util import async_timed, delay
 
 
@@ -12,6 +17,7 @@ async def cpu_bound_work() -> int:
 
 @async_timed()
 async def main():
+    # delay_task = asyncio.create_task(delay(4))
     task_one = asyncio.create_task(cpu_bound_work())
     task_two = asyncio.create_task(cpu_bound_work())
     delay_task = asyncio.create_task(delay(4))

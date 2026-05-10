@@ -1,6 +1,13 @@
-import asyncio
 from asyncio import CancelledError
-from util import delay
+import sys
+import os
+import asyncio
+
+# Добавляем корневую папку проекта в sys.path
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Теперь можно использовать абсолютный импорт вместо относительного
+from util.delay_functions import delay
 
 
 async def main():

@@ -1,5 +1,10 @@
+import sys
+import os
 import asyncio
-from util import async_timed
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from util import async_timed, delay
 
 
 @async_timed()

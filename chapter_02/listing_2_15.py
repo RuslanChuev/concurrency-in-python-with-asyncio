@@ -1,9 +1,8 @@
-from asyncio import Future
 import asyncio
 
 
-def make_request() -> Future:
-    future = Future()
+def make_request():
+    future = asyncio.Future()
     asyncio.create_task(set_future_value(future))
     return future
 
